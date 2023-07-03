@@ -6,17 +6,14 @@ import ru.job4j.accidents.model.Accident;
 import java.util.Collection;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.atomic.AtomicInteger;
 
 @Repository
 public class AccidentMemRepository implements AccidentRepository {
 
-    private static final AccidentMemRepository INSTANCE = new AccidentMemRepository();
-    private int nextId = 1;
+    private AtomicInteger nextId = new AtomicInteger(1);
     private final Map<Integer, Accident> accidents = new ConcurrentHashMap<>();
 
-    public static AccidentMemRepository getINSTANCE() {
-        return INSTANCE;
-    }
 
     private AccidentMemRepository() {
         save(new Accident(0, "ДТП1", "Описание1", "Адрес1"));
@@ -27,7 +24,7 @@ public class AccidentMemRepository implements AccidentRepository {
 
     @Override
     public Accident save(Accident accident) {
-        accident.setId(nextId++);
+        accident.setId(nextId.incrementAndGet());
         accidents.put(accident.getId(), accident);
         return accident;
     }
