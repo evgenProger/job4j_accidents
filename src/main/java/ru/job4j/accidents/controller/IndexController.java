@@ -20,4 +20,10 @@ public class IndexController {
         model.addAttribute("accidents", accidentRepository.findAll());
         return "index";
     }
+
+    @GetMapping("/index")
+    public String getAllAccidents(Model model) {
+        model.addAttribute("accidents", accidentRepository.findAll());
+        return "index";
+    }
 }
