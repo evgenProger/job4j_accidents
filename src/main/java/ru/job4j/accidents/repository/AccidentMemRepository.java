@@ -5,6 +5,7 @@ import ru.job4j.accidents.model.Accident;
 
 import java.util.Collection;
 import java.util.Map;
+import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -33,4 +34,18 @@ public class AccidentMemRepository implements AccidentRepository {
     public Collection<Accident> findAll() {
         return accidents.values();
     }
+
+    @Override
+    public Optional<Accident> findById(int id) {
+        return Optional.ofNullable(accidents.get(id));
+    }
+
+    @Override
+    public void update(Accident accident) {
+        int id = accident.getId();
+        Accident newAccident = findById(id).get();
+        newAccident.setName(accident.getName());
+        accidents.put(id, newAccident);
+    }
+
 }
