@@ -14,15 +14,8 @@ public class IndexController {
         this.accidentRepository = accidentRepository;
     }
 
-
-    @GetMapping("/")
+    @GetMapping(value = {"/", "/index"})
     public String getAll(Model model) {
-        model.addAttribute("accidents", accidentRepository.findAll());
-        return "index";
-    }
-
-    @GetMapping("/index")
-    public String getAllAccidents(Model model) {
         model.addAttribute("accidents", accidentRepository.findAll());
         return "index";
     }
