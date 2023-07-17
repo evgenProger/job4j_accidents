@@ -43,9 +43,9 @@ public class AccidentMemRepository implements AccidentRepository {
     @Override
     public void update(Accident accident) {
         int id = accident.getId();
-        Accident newAccident = findById(id).get();
-        newAccident.setName(accident.getName());
-        accidents.put(id, newAccident);
+        accidents.computeIfPresent(id, (key, existingAccident) -> {
+            existingAccident.setName(accident.getName());
+            return existingAccident;
+        });
     }
-
 }
