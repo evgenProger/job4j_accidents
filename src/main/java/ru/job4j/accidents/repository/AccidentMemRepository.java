@@ -45,6 +45,9 @@ public class AccidentMemRepository implements AccidentRepository {
         int id = accident.getId();
         accidents.computeIfPresent(id, (key, existingAccident) -> {
             existingAccident.setName(accident.getName());
+            existingAccident.setAddress(accident.getAddress());
+            existingAccident.setText(accident.getText());
+            existingAccident.setType(accident.getType());
             return existingAccident;
         });
     }
