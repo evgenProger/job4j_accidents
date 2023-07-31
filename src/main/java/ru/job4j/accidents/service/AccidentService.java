@@ -7,7 +7,6 @@ import ru.job4j.accidents.model.AccidentType;
 import ru.job4j.accidents.repository.AccidentRepository;
 import ru.job4j.accidents.repository.AccidentTypeRepository;
 
-import java.util.Collection;
 import java.util.Optional;
 
 @Service
@@ -21,6 +20,7 @@ public class AccidentService {
         AccidentType accidentType = accidentTypeRepository.accidentTypeFindById(accident.getType()
                                                                                         .getId())
                                                           .get();
+
         accident.setType(accidentType);
         accidentRepository.save(accident);
     }
@@ -31,9 +31,5 @@ public class AccidentService {
 
     public void update(Accident accident) {
         accidentRepository.update(accident);
-    }
-
-    public Collection<AccidentType> findAll() {
-        return accidentTypeRepository.findAll();
     }
 }

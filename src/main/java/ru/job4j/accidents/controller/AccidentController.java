@@ -9,8 +9,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import ru.job4j.accidents.model.Accident;
 import ru.job4j.accidents.model.AccidentType;
-import ru.job4j.accidents.repository.AccidentTypeRepository;
+import ru.job4j.accidents.model.Rule;
 import ru.job4j.accidents.service.AccidentService;
+import ru.job4j.accidents.service.AccidentTypeService;
+import ru.job4j.accidents.service.RuleService;
 
 import java.util.Collection;
 import java.util.Optional;
@@ -19,12 +21,17 @@ import java.util.Optional;
 @AllArgsConstructor
 public class AccidentController {
     private final AccidentService accidentService;
+    private final AccidentTypeService accidentTypeService;
+    private final RuleService ruleService;
+
 
 
     @GetMapping("/createAccident")
     public String viewCreateAccident(Model model) {
-        Collection<AccidentType> types = accidentService.findAll();
+        Collection<AccidentType> types = accidentTypeService.findAll();
+        Collection<Rule> rules = ruleService.findAllRules();
         model.addAttribute("types", types);
+        model.addAttribute("rules", rules);
         return "createAccident";
     }
 
