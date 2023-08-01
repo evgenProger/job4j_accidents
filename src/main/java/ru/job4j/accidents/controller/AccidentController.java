@@ -12,9 +12,14 @@ import ru.job4j.accidents.model.AccidentType;
 import ru.job4j.accidents.model.Rule;
 import ru.job4j.accidents.service.AccidentService;
 import ru.job4j.accidents.service.AccidentTypeService;
+import ru.job4j.accidents.service.RuleService;
 
+import javax.servlet.http.HttpServletRequest;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Controller
 @AllArgsConstructor
@@ -22,16 +27,25 @@ public class AccidentController {
 
     private final AccidentService accidentService;
     private final AccidentTypeService accidentTypeService;
+    private final RuleService ruleService;
+
 
     @GetMapping("/createAccident")
     public String viewCreateAccident(Model model) {
         Collection<AccidentType> types = accidentTypeService.findAll();
+        Collection<Rule> rules = ruleService.findAll();
         model.addAttribute("types", types);
+        model.addAttribute("rules", rules);
         return "createAccident";
     }
 
     @PostMapping("/saveAccident")
-    public String save(@ModelAttribute Accident accident) {
+    public String save(@ModelAttribute Accident accident, HttpServletRequest req) {
+        String[] ids = req.getParameterValues("rIds");
+        Set<Rule> ruleSet = Arrays.stream(ids)
+                                  .map(r -> ruleService.ruleFindById(Integer.parseInt(r)).get())
+                                  .collect(Collectors.toSet());
+        accident.setRules(ruleSet);
         accidentService.save(accident);
         return "redirect:/index";
     }
