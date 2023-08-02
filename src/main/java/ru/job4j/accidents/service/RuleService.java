@@ -8,6 +8,7 @@ import ru.job4j.accidents.repository.RuleRepository;
 
 import java.util.Collection;
 import java.util.Optional;
+import java.util.Set;
 
 @Service
 @AllArgsConstructor
@@ -23,5 +24,7 @@ public class RuleService {
         return ruleRepository.ruleFindById(id);
     }
 
-
+    public Set<Rule> getRuleSet(String[] ids) {
+       return ruleRepository.getRuleSet(ids);
+    }
 }

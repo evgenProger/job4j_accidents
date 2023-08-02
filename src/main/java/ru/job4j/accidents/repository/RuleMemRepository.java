@@ -4,11 +4,10 @@ import org.springframework.stereotype.Repository;
 import ru.job4j.accidents.model.AccidentType;
 import ru.job4j.accidents.model.Rule;
 
-import java.util.Collection;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.Collectors;
 
 @Repository
 public class RuleMemRepository implements RuleRepository {
@@ -38,5 +37,12 @@ public class RuleMemRepository implements RuleRepository {
     @Override
     public Optional<Rule> ruleFindById(int id) {
         return Optional.ofNullable(rules.get(id));
+    }
+
+    @Override
+    public Set<Rule> getRuleSet(String[] ids) {
+        return Arrays.stream(ids)
+                                  .map(r -> ruleFindById(Integer.parseInt(r)).get())
+                                  .collect(Collectors.toSet());
     }
 }
