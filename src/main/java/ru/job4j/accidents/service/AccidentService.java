@@ -4,32 +4,32 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.job4j.accidents.model.Accident;
 import ru.job4j.accidents.model.AccidentType;
-import ru.job4j.accidents.repository.AccidentRepository;
-import ru.job4j.accidents.repository.AccidentTypeRepository;
-
-import java.util.Optional;
+import ru.job4j.accidents.repository.AccidentDBRepository;
+import ru.job4j.accidents.repository.TypeDBRepository;
 
 @Service
 @AllArgsConstructor
 public class AccidentService {
 
-    private AccidentRepository accidentRepository;
-    private AccidentTypeRepository accidentTypeRepository;
+    private AccidentDBRepository accidentDBRepository;
+    private TypeDBRepository typeDBRepository;
 
-    public void save(Accident accident) {
-        AccidentType accidentType = accidentTypeRepository.accidentTypeFindById(accident.getType()
-                                                                                        .getId())
-                                                          .get();
 
+    public void save(Accident accident, String[] ids) {
+        AccidentType accidentType = typeDBRepository.accidentTypeFindById(accident.getType().getId());
         accident.setType(accidentType);
-        accidentRepository.save(accident);
+        accidentDBRepository.save(accident, ids);
     }
 
-    public Optional<Accident> findById(int id) {
-       return accidentRepository.findById(id);
+    public void saveAccidentRule(Number accidentId, String[] ids) {
+        accidentDBRepository.saveAccidentRule(accidentId, ids);
+    }
+
+    public Accident findById(int id) {
+       return accidentDBRepository.accidentFindById(id);
     }
 
     public void update(Accident accident) {
-        accidentRepository.update(accident);
+        accidentDBRepository.updateAccident(accident);
     }
 }

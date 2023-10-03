@@ -30,6 +30,7 @@ public class AccidentController {
     private final RuleService ruleService;
 
 
+
     @GetMapping("/createAccident")
     public String viewCreateAccident(Model model) {
         Collection<AccidentType> types = accidentTypeService.findAll();
@@ -40,21 +41,21 @@ public class AccidentController {
     }
 
     @PostMapping("/saveAccident")
-    public String save(@ModelAttribute Accident accident, HttpServletRequest req) {
+    public String save(@ModelAttribute("accident") Accident accident, HttpServletRequest req) {
         String[] ids = req.getParameterValues("rIds");
         Set<Rule> ruleSet = ruleService.getRuleSet(ids);
         accident.setRules(ruleSet);
-        accidentService.save(accident);
+        accidentService.save(accident, ids);
         return "redirect:/index";
     }
 
     @GetMapping("/formUpdateAccident")
     public String update(@RequestParam("id") int id, Model model) {
-        Optional<Accident> accident = accidentService.findById(id);
-        if (accident.isEmpty()) {
+        Accident accident = accidentService.findById(id);
+        if (accident == null) {
             return "accidentNotFound";
         }
-        model.addAttribute("accident", accident.get());
+        model.addAttribute("accident", accident);
         return "update";
     }
 

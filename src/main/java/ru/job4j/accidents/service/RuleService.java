@@ -4,27 +4,26 @@ package ru.job4j.accidents.service;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.job4j.accidents.model.Rule;
-import ru.job4j.accidents.repository.RuleRepository;
+import ru.job4j.accidents.repository.RuleDBRepository;
 
 import java.util.Collection;
-import java.util.Optional;
 import java.util.Set;
 
 @Service
 @AllArgsConstructor
 public class RuleService {
 
-    private RuleRepository ruleRepository;
+    private RuleDBRepository ruleDBRepository;
 
     public Collection<Rule> findAll() {
-        return ruleRepository.findAll();
+        return ruleDBRepository.findAll();
     }
 
-    public Optional<Rule> ruleFindById(int id) {
-        return ruleRepository.ruleFindById(id);
+    public Rule ruleFindById(int id) {
+        return ruleDBRepository.ruleFindById(id);
     }
 
     public Set<Rule> getRuleSet(String[] ids) {
-       return ruleRepository.getRuleSet(ids);
+       return ruleDBRepository.getRuleSet(ids);
     }
 }

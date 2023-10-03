@@ -13,7 +13,7 @@ public interface RuleRepository {
 
     Collection<Rule> findAll();
 
-    Optional<Rule> ruleFindById(int id);
+    Rule ruleFindById(int id);
 
     Set<Rule> getRuleSet(String[] ids);
 }
